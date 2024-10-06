@@ -1,0 +1,12 @@
+{
+  "name": "catalog-of-characters",
+  "version": "1.0.0",
+  "description": "catalog of genshin characters",
+  "main": "index.js",
+  "scripts": {
+    "scss": "sass --watch src/index.scss style/index.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilya Sizonenko",
+  "license": "ISC"
+}

@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+html {
+    font-family: Ubuntu, sans-serif;
+}
+
+@mixin fixed {
+    position: fixed;
+    top: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#pending {
+    text-align: center;
+}
+
+.gray-window {
+    @include fixed;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.modal-block {
+    @include fixed;
+    width: 960px;
+    min-height: 500px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    background-color: white;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 0.8fr 2fr 0.3fr;
+    gap: 5px;
+
+    div:first-child {
+        width: 265px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 10px 0px 0 10px;
+        overflow: hidden;
+
+        img {
+            height: 500px;
+            width: 100%;
+            display: block;
+        }
+    }
+
+    .images {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 80%;
+
+            &:first-child {
+                width: 100%;
+            }
+        }
+
+    }
+}
+
+.list {
+    display:grid;
+    width: 1810px;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 15px;
+}
+
+
+.character {
+    width: 200px;
+    height: 300px;
+    margin-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: -1px -1px 15px 0px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    overflow: hidden;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+
+    h2 {
+        margin: 0;
+        margin: 5px 0;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+    }
+
+    button {
+        width: 50%;
+        font-size: 16px;
+        text-align: center;
+        background-color: #C7253E;
+        color: white;
+        border: none;
+        margin-top: 10px;
+    }
+}
+
+.info {
+    div {
+        font-size: 24px;
+    }
+}
+
+.div-search {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search {
+    font-size: 20px;
+    width: 30%;
+    min-width: 400px;
+    padding: 15px;
+    outline: none;
+    border-radius: 20px;
+    border: 1px solid #DCDCDC;
+}

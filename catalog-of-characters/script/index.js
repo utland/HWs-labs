@@ -1,28 +1,51 @@
-const wrapper = document.getElementById("root");
+const root = document.getElementById("root")
+const wrapper = document.getElementById("list");
 const button = document.getElementById("button");
 const pending = document.getElementById("pending")
 const grayWindow = document.getElementById("gray-window");
+const search = document.getElementById("search");
 
 const addElements = (parent, ...children) => {
     children.forEach(e => parent.appendChild(e))
 }
 
+async function preloadImg () {
+    pictures.forEach((e) => {
+        const img = new Image();
+        img.src = e;
+    })
+}
+
+const searchByName = (input) => {
+    characters.forEach(({character, element}) => {
+        if (!character.name.toUpperCase().includes(input.toUpperCase())) {
+            element.style.display = "none";
+            return false;
+        }
+        element.style.display = "block";
+        return true;
+    })
+}
+
 const openModal = ({id, title, vision, description, rarity, gender, weapon, nation}) => {
-    grayWindow.style.display = "block";
     document.body.style.overflow = 'hidden';
+
+    grayWindow.style.display = "block";
     grayWindow.addEventListener("click", () => closeModal(modal));
 
     const modal = document.createElement("div");
     modal.classList.add("modal-block");
 
-    const divImg = document.createElement("div");
     const img = document.createElement("img");
-    img.src = `https://genshin.jmp.blue/characters/${id}/card`;
-    img.addEventListener("error", () => img.src = "https://i.pinimg.com/564x/c5/0b/7b/c50b7be4d3a21f765097ca12147ed5f4.jpg")
+    img.src = `https://genshin.jmp.blue/characters/${id.toLowerCase()}/card`;
+    img.addEventListener("error", () => img.src = "assets/error.jpg")
+
+    const divImg = document.createElement("div");
     divImg.appendChild(img);
 
     const info = document.createElement("div");
     info.classList.add("info");
+
     const titleText = document.createElement("h1")
     titleText.innerText = !id.includes("traveler") ? title : `Traveler (${vision})`;
     const descriptionText = document.createElement("h2");
@@ -30,8 +53,20 @@ const openModal = ({id, title, vision, description, rarity, gender, weapon, nati
     const statistics = document.createElement("div");
     statistics.innerHTML = `Gender: ${gender}<br>Weapon: ${weapon}<br>Rarity: ${rarity} stars<br>Element: ${vision}<br>City: ${nation}`;
 
+    const imagesInfo = document.createElement("div");
+    const imgEl = document.createElement("img");
+    imgEl.src = `https://genshin.jmp.blue/elements/${vision.toLowerCase()}/icon`;
+    imagesInfo.appendChild(imgEl);
+    imagesInfo.classList.add("images");
+    for (let i = 1; i <= rarity; i++) {
+        const imgInfo = document.createElement("img")
+        imgInfo.src = "assets/star.png";
+
+        imagesInfo.appendChild(imgInfo);
+    }
+
     addElements(info, titleText, descriptionText, statistics);
-    addElements(modal, divImg, info)
+    addElements(modal, divImg, info, imagesInfo)
     wrapper.appendChild(modal);
 }
 
@@ -55,29 +90,48 @@ async function getParametrs(name) {
     return character;
 }
 
-const characters = await fetchAPI();
-let status = "downloading";
+const names = await fetchAPI();
+const pictures = [];
+const characters = [];
 
-for (const c of characters) {
-    const character = await getParametrs(c);
+const promisesOfCharacters = names.map((e) => {
+    pictures.push(`https://genshin.jmp.blue/characters/${e}/card`, `https://genshin.jmp.blue/characters/${e}/icon-big`);
+    
+    return getParametrs(e)
+});
 
+const renewedList = await Promise.all(promisesOfCharacters);
+
+await preloadImg();
+
+renewedList.forEach((character) => {
+    const id = character.id.toLowerCase();
+    
     const div = document.createElement("div");
     div.classList.add("character")
     div.addEventListener("click", () => openModal(character))
     
     const imgEl = document.createElement("img")
-    imgEl.src = `https://genshin.jmp.blue/characters/${c}/icon-big`;
-
+    imgEl.src = `https://genshin.jmp.blue/characters/${id}/icon-big`;
+    imgEl.style.backgroundColor = character.rarity === 5 ? "rgb(200,124,36" : "rgb(148,112,187)";
+    //imgEl.onload = () => imgEl.style.background = "gray";
+    
     const headLine = document.createElement("h2");
     headLine.textContent = `${!character.id.includes("traveler") ? character.name : `Traveler (${character.vision})`}`;
     headLine.classList.add("name");
     
     addElements(div, imgEl, headLine);
-    wrapper.appendChild(div);
-}
+    wrapper.appendChild(div); 
+    
+    characters.push({character, element: div});
+})
 
 pending.style.display = "none";
-wrapper.style.display = "grid";
+root.style.display = "grid";
+
+
+search.addEventListener("input", (input) => searchByName(input.target.value));
+
 
 
 
