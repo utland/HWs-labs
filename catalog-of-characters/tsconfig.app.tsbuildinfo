@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/apps/catalog.tsx","./src/apps/charactercard.tsx","./src/apps/modal.tsx","./src/apps/searchinput.tsx","./src/apps/sort.tsx","./src/context/searchvalue.tsx","./src/context/modaloperations.tsx","./src/enums/orderenum.tsx","./src/enums/sortbyenum.tsx","./src/interfaces/charactertype.tsx"],"version":"5.6.3"}
