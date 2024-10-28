@@ -7,7 +7,7 @@
 const generateKey = (length, possible) => {
   let res = [];
   for (let i = 0; i < length; i++) {
-    res.push(possible[Math.floor(Math.random() * (length - 1))]);
+    res.push(possible.charAt(Math.floor(Math.random() * (length - 1))));
   }
   return res.toString().replaceAll(",", "");
 };
