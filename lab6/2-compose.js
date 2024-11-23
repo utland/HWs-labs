@@ -11,7 +11,6 @@ const compose = (...fns) => {
             res = fns.reduceRight((acc, fn) => fn(acc), x);
         } catch (error) {
             for (const handler of handlers) {
-                console.log(error.message)
                 handler(error);
             }
         }
