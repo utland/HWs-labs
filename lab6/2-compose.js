@@ -6,7 +6,7 @@ const compose = (...fns) => {
         let res;
         try {
             for (const fn of fns) {
-                if (typeof fn !== "function" && fns.length === 0) throw new Error("Arguments are empty or not functions")
+                if (typeof fn !== "function") throw new Error("Argument is not a function")
             }
             res = fns.reduceRight((acc, fn) => fn(acc), x);
         } catch (error) {
